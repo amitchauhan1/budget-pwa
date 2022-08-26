@@ -1,0 +1,214 @@
+
+/* ======================================================
+	Watch_Video_page's
+====================================================== */
+
+	/* ======================================================
+		Video_popup
+	====================================================== */	
+		/* Modal Base CSS */
+		.scotch-overlay {
+		    position: fixed;
+		    z-index: 9998;
+		    top: 0;
+		    left: 0;
+		    opacity: 0;
+		    width: 100%;
+		    height: 100%;
+		    -webkit-transition: 1ms opacity ease;
+		    -moz-transition: 1ms opacity ease;
+		    -ms-transition: 1ms opacity ease;
+		    -o-transition: 1ms opacity ease;
+		    transition: 1ms opacity ease;
+		    background: rgba(0, 0, 0, 0.6);
+		}
+
+		.scotch-modal {
+		    position: absolute;
+		    z-index: 9999;
+		    top: 50%;
+		    left: 50%;
+		    opacity: 0;
+		    width: 94%;
+		    padding: 24px 20px;
+		    -webkit-transition: 1ms opacity ease;
+		    -moz-transition: 1ms opacity ease;
+		    -ms-transition: 1ms opacity ease;
+		    -o-transition: 1ms opacity ease;
+		    transition: 1ms opacity ease;
+		    -webkit-transform: translate(-50%, -50%);
+		    -moz-transform: translate(-50%, -50%);
+		    -ms-transform: translate(-50%, -50%);
+		    -o-transform: translate(-50%, -50%);
+		    transform: translate(-50%, -50%);
+		    border-radius: 2px;
+		    background: #fff;
+		}
+		.scotch-modal.scotch-open.scotch-anchored {
+		    top: 20px;
+		    -webkit-transform: translate(-50%, 0);
+		    -moz-transform: translate(-50%, 0);
+		    -ms-transform: translate(-50%, 0);
+		    -o-transform: translate(-50%, 0);
+		    transform: translate(-50%, 0);
+		}
+		.scotch-modal.scotch-open {
+		    opacity: 1;
+		}
+		.scotch-overlay.scotch-open {
+		    opacity: 1;
+		}
+		/* Close Button */
+		.scotch-close {
+		    width: 30px;
+		    height: 30px;
+		    font-size: 24px;
+		    font-weight: 700;
+		    line-height: 12px;
+		    position: absolute;
+		    top: -10px;
+		    right: -10px;
+		    padding: 5px 7px 7px;
+		    color: #fff;
+		    border: 0;
+		    outline: none;
+		    border-radius: 100px;
+		    background: #5AC7F5;
+		    text-align: center;
+		}
+		/* Default Animation */
+		.scotch-overlay.fade-and-drop {
+		    display: block;
+		    opacity: 0;
+		}
+		.scotch-modal.fade-and-drop {
+		    top: -300%;
+		    opacity: 1;
+		    display: block;
+		}
+		.scotch-modal.fade-and-drop.scotch-open {
+		    top: 50%;
+		    -webkit-transition: 500ms top 500ms ease;
+		    -moz-transition: 500ms top 500ms ease;
+		    -ms-transition: 500ms top 500ms ease;
+		    -o-transition: 500ms top 500ms ease;
+		    transition: 500ms top 500ms ease;
+		}
+		.scotch-modal.fade-and-drop.scotch-open.scotch-anchored {
+		    -webkit-transition: 500ms top 500ms ease;
+		    -moz-transition: 500ms top 500ms ease;
+		    -ms-transition: 500ms top 500ms ease;
+		    -o-transition: 500ms top 500ms ease;
+		    transition: 500ms top 500ms ease;
+		}
+		.scotch-overlay.fade-and-drop.scotch-open {
+		    top: 0;
+		    -webkit-transition: 500ms opacity ease;
+		    -moz-transition: 500ms opacity ease;
+		    -ms-transition: 500ms opacity ease;
+		    -o-transition: 500ms opacity ease;
+		    transition: 500ms opacity ease;
+		    opacity: 1;
+		}
+		.scotch-modal.fade-and-drop {
+		    -webkit-transition: 500ms top ease;
+		    -moz-transition: 500ms top ease;
+		    -ms-transition: 500ms top ease;
+		    -o-transition: 500ms top ease;
+		    transition: 500ms top ease;
+		}
+		.scotch-overlay.fade-and-drop {
+		    -webkit-transition: 500ms opacity 500ms ease;
+		    -moz-transition: 500ms opacity 500ms ease;
+		    -ms-transition: 500ms opacity 500ms ease;
+		    -o-transition: 500ms opacity 500ms ease;
+		    transition: 500ms opacity 500ms ease;
+		}
+		#content {
+		    display: none;
+		}
+		.trigger-button {
+			border: 0;
+		    font-size: 12px;
+		    padding: 8px 18px;
+		    color: #595959;
+		    outline: none;
+		    font-weight: 300;
+		    border-radius: 100px;
+		    margin-bottom: 31px;
+		    line-height: 1;
+		}
+		.video-hero{
+			background: #B6E7D2;
+			border-radius: 20px;
+			padding: 22px 118px 0 45px;
+			box-shadow: 0px 0px 14px 1px rgba(0, 0, 0, 0.1);
+		}
+		.video-banner .insights-subtitles{
+			color: #595959;
+			font-size: 10px;
+			line-height: 12px;
+			max-width: 60%;
+			font-weight: 300;
+			margin: 10px 0 35px;
+		}
+		.video-banner .insights-title{
+			font-weight: 500;
+		}
+		.blog-title{
+			font-size: 20px;
+			line-height: 25px;
+			font-weight: 500;
+		}
+		.blog-subtitle,
+		.blog-smalltitle{
+			font-size: 10px;
+			line-height: 12px;
+			font-weight: 300;
+			margin: 15px 0;
+		}
+		.blog-smalltitle{
+			margin: 0;
+		}
+		.video-box{
+			margin-bottom: 35px;
+		}
+		.myText.video-box{
+			display: block;
+		}
+		.video-box{
+			display: none;
+		}
+		.top-trading .blog-title {
+		    font-size: 12px;
+		    line-height: 15px;
+		    margin-bottom: 6px;
+		    display: inline-block;
+		}
+		.top-trading .blog-contant{
+			font-size: 6px;
+			line-height: 7.56px;
+		}
+		a#loadMore {
+			font-weight: 400;
+		    font-size: 10px;
+		    line-height: 12px;
+		    color: #5AC7F5;
+		    display: table;
+		    margin: 47px auto 0;
+		}
+		.top-trading .video-box{
+			margin-bottom: 30px;
+		}
+		.top-trading{
+			box-shadow: 0px 0px 14px 1px rgba(0, 0, 0, 0.1);
+			padding: 30px 50px 125px 30px;
+			border-radius: 17px;
+			margin-top: 52px;
+		}
+		.watch-video .account-tabbing{
+			padding: 58px 55px 0 116px;
+		}
+		.footer.footer-watchvideo ul{
+			margin: 78px 0 15px;
+		}

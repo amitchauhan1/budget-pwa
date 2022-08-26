@@ -1,0 +1,109 @@
+.sign-in-with-wrapper {
+  border-top: 1px solid #d2d0d0;
+}
+.sign-in-with {
+  display: flex;
+  align-items: center;
+  padding-top: 9px;
+  margin-top: 3px;
+}
+@media (max-width: 1000px) {
+  .sign-in-with-inlined .sign-in-with {
+    flex-direction: column;
+  }
+  .sign-in-with-inlined .sign-in-with__logo {
+    margin-top: 12px;
+  }
+}
+.sign-in-forgot-password a {
+  padding: 8px 0;
+}
+.sign-in-with__label {
+  display: block;
+  padding-top: 19px;
+}
+.sign-in-button {
+  width: 110px;
+}
+.sign-up-button {
+  width: 110px;
+}
+.sign-in-with__logo-google {
+  min-width: 110px;
+  height: 40px;
+  text-decoration: none;
+  color: #4b4b4b !important;
+  display: flex;
+  margin-right: 28px;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 1px #b7b7b7;
+  background: #ffffff;
+  border-radius: 2px;
+  user-select: none;
+  font-size: 13px;
+}
+.shop-sign-in-with .sign-in-with-wrapper .sign-in-with__label {
+  font-weight: normal;
+}
+.sign-in-with__logo-google:focus {
+  color: #4b4b4b;
+  text-decoration: none;
+}
+.sign-in-with__logo-google:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 3px 1px #97dbff;
+}
+.sign-in-with__logo-google:hover {
+  color: #4b4b4b;
+  text-decoration: none;
+}
+.sign-in-with__logo-google:active {
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 1px #b7b7b7 !important;
+  background: #eeeeee;
+}
+.sign-in-with__logo {
+  display: block;
+  margin-right: 28px;
+  position: relative;
+}
+.sign-in-with__logo a:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 3px 1px #97dbff;
+}
+.sign-in-with__logo:after {
+  content: "";
+  opacity: 0;
+  transition: opacity 1200ms;
+  position: absolute;
+  bottom: -12px;
+  left: -4px;
+  height: 2px;
+  width: 32px;
+}
+.sign-in-with__logo:hover:after,
+.sign-in-with__logo:active:after,
+.sign-in-with__logo:focus:after {
+  background: #797777;
+  opacity: 0.5;
+}
+.sign-in-with__logo > a:focus {
+  box-shadow: none;
+}
+.sign-in-with__logo:active:after {
+  background: black;
+}
+.linked-accounts-list__row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.linked-accounts-list__logo-cell {
+  width: 80px;
+}
+.linked-accounts-list__userpic {
+  border-radius: 50%;
+  margin-bottom: -22px;
+  margin-left: -22px;
+}
+
