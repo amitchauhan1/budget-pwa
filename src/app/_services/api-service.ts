@@ -1,16 +1,16 @@
 export var ApiService = {
 
   // AWS Server
-  base_url : 'http://3.110.14.3/budget_app_pwa/',
-  service_url: 'http://3.110.14.3/budget_app_pwa/server/public/api/',
-  get_image_Url:'http://3.110.14.3/budget_app_pwa/server/public/assets/uploads/',
-  siteURL: 'http://3.110.14.3/budget_app_pwa/server/',
+  // base_url : 'http://3.110.14.3/budget_app_pwa/',
+  // service_url: 'http://3.110.14.3/budget_app_pwa/server/public/api/',
+  // get_image_Url:'http://3.110.14.3/budget_app_pwa/server/public/assets/uploads/',
+  // siteURL: 'http://3.110.14.3/budget_app_pwa/server/',
 
   // Test Server
-  // base_url : 'http://budget.hostappshere.co.in/',
-  // service_url: 'http://budget.hostappshere.co.in/server/public/api/',
-  // get_image_Url:'http://budget.hostappshere.co.in/server/public/assets/uploads/',
-  // siteURL: 'http://budget.hostappshere.co.in/server/',
+  base_url : 'http://budget.hostappshere.co.in/',
+  service_url: 'http://budget.hostappshere.co.in/server/public/api/',
+  get_image_Url:'http://budget.hostappshere.co.in/server/public/assets/uploads/',
+  siteURL: 'http://budget.hostappshere.co.in/server/',
 
   // development server
     // base_url : 'https://www.CreateYourBudget.com/',

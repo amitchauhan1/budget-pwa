@@ -173,7 +173,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       decls: 0,
       vars: 0,
       template: function SettingComponent_Template(rf, ctx) {},
-      styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3NldHRpbmcvc2V0dGluZy5jb21wb25lbnQuc2NzcyJ9 */"]
+      styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiIuLi9zcmMvYXBwL3NldHRpbmcvc2V0dGluZy5jb21wb25lbnQuc2NzcyJ9 */"]
     });
     SettingComponent.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
       token: SettingComponent,
