@@ -1,0 +1,49 @@
+<div class="col-md-12 ps-md-0 setting-ml-10">
+    <div class="accounting-bgcolor">
+        <div class="account-tabbing w-100 d-inline-block">
+            <div class="account-mainbox w-100 d-inline-block bg-white">
+                <div class="row">
+                    <div class="col-lg-4 menu-border position-relative">
+                        <ul class="nav nav-tabbingac" role="tablist">
+                            <li class="nav-itemsac items-hover position-relative w-100 d-inline-block">
+                                <a class="nav-linksac active" routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{exact : true}" data-toggle="tab"
+                                    routerLink="/app/setting" [queryParams]="{account: 'edit-profile'}" role="tab">
+                                    <img src="/assets/img/insights/pen.png" class="menu-icon">Edit Profile<span
+                                        class="dropdown-icon"></span>
+                                </a>
+                            </li>
+                            <li class="nav-itemsac w-100 d-inline-block">
+                                <a class="nav-linksac" routerLinkActive="active" data-toggle="tab"
+                                    routerLink="/app/setting/changepassword"
+                                    [queryParams]="{account: 'change-password'}" role="tab"><img
+                                        src="/assets/img/insights/change_password.png" class="menu-icon">Password &
+                                    Security<span class="dropdown-icon"></span></a>
+                            </li>
+                            <li class="nav-itemsac w-100 d-inline-block">
+                                <a mwlConfirmationPopover [popoverTitle]="popoverTitle"
+                                    [popoverMessage]="popoverMessage" placement="center" (confirm)=logout()
+                                    (cancel)="cancelClicked = true" class="nav-linksac mb-0" routerLinkActive="active"
+                                    data-toggle="tab" href="#logout" role="tab"><img
+                                        src="assets/img/insights/logout_fill.png" class="menu-icon">Logout<span
+                                        class="dropdown-icon"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-8">
+                        <router-outlet></router-outlet>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer footer-insights w-100 d-inline-block">
+        <ul class="d-flex justify-content-center list-unstyled">
+            <li><a href="#">Terms of Service</a><span class="border-shape"></span></li>
+            <li><a href="#">Privacy Policy</a><span class="border-shape"></span></li>
+            <li><a routerLink="/app/contact-us">Contact Us</a><span class="border-shape"></span></li>
+            <li><a href="#">About Us</a><span class="border-shape"></span></li>
+            <li><a href="#">Subscription</a></li>
+        </ul>
+        <p class="footer-bottom text-center mb-0">Ⓒ StworzSwojBudzet, Inc. All Rights Reserved.</p>
+    </footer>

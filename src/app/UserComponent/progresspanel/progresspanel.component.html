@@ -1,0 +1,70 @@
+<div class="budzet watch-video w-100 d-inline-block align-top" style="padding-left : 10.2rem;">
+    <div class="container">
+        <div class="main-row w-100 position-relative">
+            <div class="col-md-12 ps-md-0">
+                <div class="insights-bgcolor">
+                    <div class="row align-items-end">
+                        <div class="prising-table w-100 d-inline-block">
+                            <h2 class="prising-table-title text-center">Our Pricing Plans</h2>
+                            <div class="grid">
+                                <div *ngFor="let data of planList">
+                                    <div *ngIf="data.plan_type ==1" class="card">
+                                        <h2 class="card_title text-center m-0">{{data.plan_name}}</h2>
+                                        <div class="border-prising"></div>
+                                        <p class="pricing text-center">{{data.amount |currency:'PLN ':'code'}}
+                                        </p>
+                                        <ul class="features list-unstyled freePlan">
+                                            <div *ngFor="let feature of data.features">
+                                                <li *ngIf="feature.selected == true"><i
+                                                        class="fa fa-check-circle feature-checkicon"></i>{{feature.features}}
+                                                </li>
+                                                <li *ngIf="feature.selected == false"><i
+                                                        class="fa fa-times-circle feature-timesicon"></i>{{feature.features}}
+                                                </li>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                    <div *ngIf="data.plan_type ==2" class="card position-relative">
+                                        <div class="featured-ribbon"><img src="/assets/front/img/star.png"></div>
+                                        <h2 class="card_title text-center m-0">{{data.plan_name}}</h2>
+                                        <div class="border-prising"></div>
+                                        <p class="pricing text-center">{{data.amount
+                                            |currency:'PLN ':'code'}}<span class="small">/
+                                                {{data.month}} months</span>
+                                        </p>
+                                        <ul
+                                            class="{{userPlan==1 ? 'features list-unstyled' : 'features list-unstyled freePlan'}}">
+                                            <div *ngFor="let feature of data.features">
+                                                <li *ngIf="feature.selected == true"><i
+                                                        class="fa fa-check-circle feature-checkicon"></i>{{feature.features}}
+                                                </li>
+                                                <li *ngIf="feature.selected == false"><i
+                                                        class="fa fa-times-circle feature-timesicon"></i>{{feature.features}}
+                                                </li>
+                                            </div>
+                                        </ul>
+                                        <a (click)="selectPlanToSubscribe(data.plan_id)" class="cta_btn">Get
+                                            Started</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <footer class="footer footer-watchvideo w-100 d-inline-block">
+                    <ul class="d-flex justify-content-center list-unstyled">
+                        <li><a href="#">Terms of Service</a><span class="border-shape"></span></li>
+                        <li><a href="#">Privacy Policy</a><span class="border-shape"></span></li>
+                        <li><a routerLink="/app/contact-us">Contact Us</a><span class="border-shape"></span></li>
+                        <li><a href="#">About Us</a><span class="border-shape"></span></li>
+                        <li><a href="#">Subscription</a></li>
+                    </ul>
+                    <p class="footer-bottom text-center mb-0">Ⓒ StworzSwojBudzet, Inc. All Rights Reserved.</p>
+                </footer>
+            </div>
+
+
+        </div>
+    </div>
+</div>

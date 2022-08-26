@@ -1,0 +1,50 @@
+<!-- Header -->
+<header class="budzet-header w-100 d-inline-block align-top">
+    <div class="container">
+        <a href="/" class="navbar-brand p-0"><img src="assets/front/img/header-logo.png"></a>
+    </div>
+    <!-- Sidebar Toggle -->
+    <!-- <a href="javascript:void(0);" id="toggle_btn">
+        <i class="fas fa-bars"></i>
+    </a> -->
+    <!-- /Sidebar Toggle -->
+
+
+
+    <!-- Mobile Menu Toggle -->
+    <!-- <a class="mobile_btn" id="mobile_btn">
+        <i class="fas fa-bars"></i>
+    </a> -->
+
+</header>
+
+
+<!-- Header_Menu -->
+<div class="budzet w-100 d-inline-block align-top">
+    <div class="container">
+        <div class="main-row w-100 position-relative">
+            <div class="bd-sidebar">
+                <nav class="bd-links bg-withe position-relative" id="bd-docs-nav" aria-label="Docs navigation">
+                    <ul class="navmenu list-unstyled m-0 p-0">
+                        <li><a routerLink="/app/budget" routerLinkActive="active"><img
+                                    src="assets/front/img/header/budget.png"> Budget</a></li>
+                        <li><a routerLink="/app/insight" routerLinkActive="active"><i class="fal fa-analytics pr-2"></i>
+                                Insights</a></li>
+                        <li><a routerLink="/app/learn-budget" routerLinkActive="active"><img
+                                    src="assets/front/img/header/learn.png"> Learn</a></li>
+                        <li><a routerLink="/app/progresspanel" routerLinkActive="active"
+                                [queryParams]="{chooseplan: 'choose-plan'}"><img
+                                    src="assets/img/insights/choose_plan.png">Choose plan</a></li>
+                        <li><a routerLink="/app/progresspanel2" routerLinkActive="active"><img
+                                    src="assets/front/img/header/progress-plane.png">Progress Panel</a></li>
+
+                        <li><a routerLink="/app/setting" [queryParams]="{account: 'edit-profile'}"
+                                routerLinkActive="active"><img src="assets/front/img/header/settings.png"> Settings &
+                                Txn</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

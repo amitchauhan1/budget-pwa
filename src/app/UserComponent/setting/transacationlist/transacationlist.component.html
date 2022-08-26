@@ -1,0 +1,51 @@
+
+            <div class="budzet w-100 d-inline-block align-top">
+                <div class="container">
+                    <div class="main-row w-100 position-relative">
+            
+            
+                        <div class="tab-pane active" id="editprofile" role="tabpanel">
+                            <div class="row">
+                                
+                               
+                                    
+                                </div>
+                                <h3 class="edit-title mt-0">Transacation List</h3>
+                                <div class="input-group">
+                                    <input type="text"  [(ngModel)]="term" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                                    <!-- <button type="button" (click)="clear()" class="btn btn-outline-primary">clear</button> -->
+                                  </div><br>
+                               
+                                <table class="table table-bordered">
+                                    <thead class="headercolor">
+                                        <tr>
+                                            <th scope="col">Date & Time</th>
+                                            <th scope="col">Transcation Id</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col"> status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let detail of transcation_detail |filter:term| paginate: { itemsPerPage: 4, currentPage: p }">
+                                          <td>{{detail.created_at}}</td>
+                                          <td>{{detail.transaction_id}}</td>
+                                          <td>{{detail.amount_paid}}</td>
+                                          <td>{{detail.transaction_status}}</td>
+                                          <td><a routerLink="/app/setting/transacation/{{detail.transaction_id}}">View Detail</a></td>
+            
+                                        </tr>
+                                        
+            
+                                    </tbody>
+                                </table>
+                              
+                            </div>
+                            
+                        </div>
+                       
+                    </div>
+                </div>
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+           
+

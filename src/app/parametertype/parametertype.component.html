@@ -1,0 +1,173 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <div class="content container-fluid">
+    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Category Type</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">Category Type</li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <a title="Add category type" (click)="ParameterType_Model(0,'','')" data-toggle="modal" data-target="#model_parameter_type" href="javascript:void(0);" class="btn btn-primary mr-1">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                    <a class="btn btn-primary filter-btn" href="javascript:void(0);" id="filter_search">
+                        <i class="fas fa-filter"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+            
+        <!-- Search Filter -->
+        <div class="filter-src-main">
+            <div class="filter-src-heading">
+                <div class="filter-src-close">
+                    <i class="fas fa-times"></i>
+                </div>
+                <h5>Filter</h5>
+            </div> 
+            <div class="filter-src-inner">
+                <div class="filter-src-row">
+                    <div class="form-group">
+                        <label>Category Type</label>
+                        <input id="filter_parameter_type" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="filter-src-row">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="filter_status" class="select form-control">
+                            <option value="">Select Status</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+                </div>        
+            </div>
+            <div class="filter-footer-fix row m-0">
+                <div class="col">
+                    <button type="button" (click)="FilterSearch()" class="btn btn-block btn-outline-primary active">Search</button>
+                </div>
+                <div class="col">
+                    <button type="button" (click)="FilterReset()" class="btn btn-block btn-outline-danger active">Reset</button>
+                </div>
+            </div>
+        </div> 
+        <div class="filter-src-backdroup"></div>
+        <!-- /Search Filter -->
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive table-main">
+                            <table id="DataTableList" class="table table-center table-hover datatable">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <td>#</td>
+                                        <td>Category type</td>
+                                        <td>Remark</td>
+                                        <td>Status</td>
+                                        <td>Actions</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="model_parameter_type" class="modal custom-modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title parameter_title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> 
+            <div class="modal-body">
+                <input id="parameter_type_id" class="form-control" type="hidden">
+                    <div class="form-group">
+                        <label>Category Type Name <span class="text-danger">*</span></label>
+                        <input id="parameter_type_name" class="form-control" type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Remark</label>
+                        <textarea id="remark" class="form-control"></textarea>
+                    </div>
+                    <div class="submit-section">
+                        <button (click)="Add_Parameter_Type()" class="btn btn-primary submit-btn" type="submit">Submit</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteModal" class="modal custom-modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span class="message">Are you sure you want to delete record?</span>
+                <div class="submit-section">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button data-dismiss="modal" class="btn btn-block btn-rounded btn-outline-danger active" type="button">No</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button (click)="DeleteConfirm()" class="btn btn-block btn-rounded btn-outline-success active" type="button">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="statusModal" class="modal custom-modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span class="message">Are you sure you want to change status?</span>
+                <div class="submit-section">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button data-dismiss="modal" class="btn btn-block btn-rounded btn-outline-danger active" type="button">No</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button (click)="Change_Status()" class="btn btn-block btn-rounded btn-outline-success active" type="button">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Wrapper -->

@@ -1,0 +1,142 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <div class="content container-fluid">
+    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Video Gallery</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Video Gallery</li>
+                    </ul>
+                </div> 
+            </div>
+        </div>
+        <!-- /Page Header -->
+        <div class="row">
+            <div class="col-12 col-md-7 col-lg-4 d-flex">
+                <div class="card flex-fill bg-white">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">UPLOAD VIDEO</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-textLibrary">Please choose a video to upload. Only MP4 format will be Supported. Please choose your video with any of these format.</p>
+                        <div class="file-upload">
+                            <div class="slt-file-text">Select your file :</div>
+                            <div class="file-select">
+                                <div class="file-select-button fileName">Choose File</div>
+                                <div class="file-select-name">Total Files : {{VideoUploader.queue.length}}</div>
+                                <input type="file" id="videofile" class="chooseFile" uploader="uploader"
+                                    multiple (change)="onSelectChange($event)" accept=".mp4"/><br />
+                                <div id="result"></div>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12" *ngIf="isVisible === 'true'">
+                <!-- <div class="col-sm-12"> -->
+                    <div class="text-right">
+                        <a title="Add Learn" (click)="uploadAllVideo()" href="javascript:void(0);" class="btn btn-outline-info mr-1">
+                            Upload All
+                        </a>
+                    </div> 
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive table-main">
+                            <table id="video-table" class="table table-center table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <td>Video Name</td>
+                                        <td ng-show="VideoUploader.isHTML5">Size</td>
+                                        <td width="50%" ng-show="VideoUploader.isHTML5">Progress</td>
+                                        <td>Status</td>
+                                        <td width="10%">Actions</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of VideoUploader.queue" class="{{item.id}}">
+                                        <td>
+                                            <p>{{ item.file.name }}</p>
+                                            <div ng-show="VideoUploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                                        </td>
+                                        <td ng-show="VideoUploader.isHTML5" nowrap>{{ item.file.size/1024/1024 | number }} MB</td>
+                                        <td ng-show="VideoUploader.isHTML5">
+                                            <div class="progress" style="margin-bottom: 0;">
+                                                <div class="progress-bar progress-bar-striped" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }">
+                                                    <!-- <div *ngIf="item.progress=='0'" style="color:#000;">{{item.progress}}%</div> -->
+                                                    <!-- <div *ngIf="item.progress != '0'" style="color:#fff;">{{item.progress}}%</div> -->
+                                                    <div style="color:#fff;">{{item.progress}}%</div>
+                                                </div>
+                                            </div>
+                                        </td> 
+                                        <td class="text-center FileStatus">
+                                            <span class="badge badge-pill bg-warning-light">Pending</span>
+                                        </td>
+                                        <td nowrap class="uploadbtn">
+                                            <button type="button" class="btn btn-block btn-outline-info active" (click)="uploadVideo(item.id)"
+                                                ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                Upload
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive table-main">
+                            <table id="DataTableList" class="table table-center table-hover datatable">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <td>Video</td>
+                                        <td>File Name</td>
+                                        <td>Upload Date</td>
+                                        <td>Actions</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+<div id="deleteModal" class="modal custom-modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span class="message">Are you sure you want to delete record?</span>
+                <div class="submit-section">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button data-dismiss="modal" class="btn btn-block btn-rounded btn-outline-danger active" type="button">No</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button (click)="DeleteConfirm()" class="btn btn-block btn-rounded btn-outline-success active" type="button">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /Page Wrapper -->

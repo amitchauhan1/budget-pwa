@@ -1,0 +1,163 @@
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Progress Panel Step</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">Step</li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <a title="Add Step" (click)="Step_Model(0,'','','','','')" data-toggle="modal" data-target="#modal_step"
+                        href="javascript:void(0);" class="btn btn-primary mr-1">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive table-main">
+                            <table id="DataTableList" class="table table-center table-hover datatable">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <td>#</td>
+                                        <td>Video</td>
+                                        <td>Step</td>
+                                        <td>Title</td>
+                                        <td>Plan</td>
+                                        <td>Status</td>
+                                        <td>Actions</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="modal_step" class="modal custom-modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title modal_title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input id="step_id" class="form-control" type="hidden">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Title <span class="text-danger">*</span></label>
+                            <input id="title" class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Step Number <span class="text-danger">*</span></label>
+                            <input id="step_no" class="form-control OnlyNumber" type="text">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Plan<span class="text-danger">*</span></label>
+                            <select id="plan_id" class="select form-control" style="width: 355px">
+                                <option value="">Select Plan</option>
+                                <option *ngFor="let plan of PlanList" value="{{plan.id}}">{{plan.plan_name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="description" class="form-control" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Video</label>
+                            <input class="form-control" id="file" type="file" (change)="onChange($event)" accept=".mp4">
+                        </div>
+                    </div>
+                </div>
+                <div class="submit-section">
+                    <button (click)="Add_Step()" class="btn btn-primary submit-btn" type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deleteModal" class="modal custom-modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span class="message">Are you sure you want to delete record?</span>
+                <div class="submit-section">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button data-dismiss="modal" class="btn btn-block btn-rounded btn-outline-danger active"
+                                type="button">No</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button (click)="DeleteConfirm()"
+                                class="btn btn-block btn-rounded btn-outline-success active" type="button">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="statusModal" class="modal custom-modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span class="message">Are you sure you want to change status?</span>
+                <div class="submit-section">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button data-dismiss="modal" class="btn btn-block btn-rounded btn-outline-danger active"
+                                type="button">No</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button (click)="Change_Status()"
+                                class="btn btn-block btn-rounded btn-outline-success active" type="button">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /Page Wrapper -->

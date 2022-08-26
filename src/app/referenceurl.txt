@@ -1,0 +1,5 @@
+#confirm-dialog
+https://www.c-sharpcorner.com/article/confirm-dialog-in-angular-using-bootstrap-modal/
+
+#api structure design
+https://medium.com/better-programming/angular-api-calls-the-right-way-264198bf2c64

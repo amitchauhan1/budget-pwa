@@ -1,0 +1,56 @@
+<div class="budzet w-100 d-inline-block align-top">
+    <div class="container">
+        <div class="main-row w-100 position-relative">
+
+
+            <div class="tab-pane active" id="editprofile" role="tabpanel">
+                <div class="row">
+
+
+                </div>
+                <h3 class="edit-title mt-0">Transacation Details</h3>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Transacation status</th>
+                            <td>: {{succes_data.transaction_status}}</td>
+                        </tr>
+                        <tr>
+                            <th>plan Id</th>
+                            <td>: {{succes_data.plan_id}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <th>User Name</th>
+                            <td>: {{auth_detail.data.user_name}}</td>
+                        </tr>
+                        <tr>
+                            <th> Email</th>
+                            <td>: {{succes_data.customer_email}}</td>
+                        </tr>
+                        <tr>
+                            <th>Mobile Number</th>
+                            <!-- <td>: {{succes_data.mobile_number}}</td> -->
+                            <td>: 987654321</td>
+                        </tr><br>
+                        <tr class=abcd>
+                            <th>Amount Paid</th>
+                            <h1>
+                                <td>:{{succes_data.amount_paid}}</td>
+                            </h1>
+                        </tr>
+                        <br>
+                       
+                        <tr>
+                            <th>Transacation Id</th>
+                            <td>: {{succes_data.transaction_id}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br><br>
+                <button type="button" class="btn btn-primary" onclick="window.print()">Print Details</button>
+                
+            </div>
+        </div>
+    </div>
+</div>

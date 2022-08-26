@@ -1,0 +1,806 @@
+<div class="row justify-content-center">
+    <div class="col-7 p-2">
+        <div class="marketplace">
+            <div class="money-market d-flex align-items-center justify-content-between">
+                <div class="prise">
+                    <h1 class="float-start d-flex">{{ datetime | date: "MMMM" }} <span>
+                            {{ datetime | date: "y" }}</span>
+                        <input type="text" id="date" class="hidden" />
+                        <button id="show-date" class="dateChangePicker-btn"><i class="fa fa-chevron-down"></i></button>
+                    </h1>
+                    <input type="hidden" id="currentDate">
+                    <span *ngIf="grand_budget!=0 && budgetResponse"
+                        class="prise-subtitles w-100 d-inline-block {{grand_budget>0?'':'color-danger'}}">
+                        {{grand_budget |currency:'PLN ':'code'}}
+                        <p class="mb-0 d-inline">{{grand_budget>0?'left to budget':'over budget'}}</p>
+                    </span>
+                    <span *ngIf="grand_budget==0" class="prise-subtitles w-100 d-inline-block color-success">
+                        It’s an EveryDollar Budget!
+                    </span>
+                </div>
+                <div (click)="getTransaction()" class="transactions-btn">
+                    <ul class="nav nav-tabs list-unstyled border-0 mr-4" role="tablist" >
+                        <li class="nav-item">
+                            <a class="nav-link p-0 border-0" data-toggle="tab" href="#profile" role="tab"><img
+                                    src="assets/front/img/transfer.png" class="m-auto d-block"><span>Transactions</span></a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-tabs list-unstyled border-0" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link p-0 border-0" data-toggle="tab" href="#profile" role="tab"
+                            (click)="OpenTransactionModal([],'expense','add')">
+                                <i class="fas fa-plus-circle addTrans m-auto d-block"></i><span>Add</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div *ngIf="monthChange == true">
+                <div class="buget-group">
+                    <div class="prompting">
+                        <div class="visual-indicator"><img src="assets/img/images.png"></div>
+                        <h3><span>Hey there, looks like you need a budget for {{datetime | date: "MMMM"}}.</span></h3>
+                        <p><span>We'll <span class="text--semi-bold">copy last month’s budget</span> to get you
+                                started.</span></p><button (click)="addSelectedMonthBudget()"
+                            class="budgetPlanning_btn mt-4">
+                            Start Planning for {{datetime | date: "MMMM"}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="buget-group" *ngIf="budgetResponse && monthChange == false">
+                <div class="income-box">
+                    <div class="income-subtitles">
+                        <h6 class="main-title position-relative text-white d-inline-block">{{ datetime | date: "MMMM" }}
+                            Income</h6>
+                    </div>
+                    <div class="income-retailer income-retailer-box bg-white">
+                        <div class="d-flex justify-content-between">
+                            <div class="income-titlemain">
+                                <h6 class="income-title font-weight-bold">Your income</h6>
+                            </div>
+                            <div class="header-toptitle">
+                                <span class="p-0 txt-right">Planned</span>
+                                <span class="txt-right">Received</span>
+                            </div>
+                        </div>
+                        <div class="multi-field-wrapper position-relative">
+                            <div class="multi-fields">
+                                <div *ngFor="let income of BudgetArray?.Income; let i = index"
+                                    class="multi-field position-relative pl-2">
+                                    <div class="pay-info d-flex justify-content-between align-items-end">
+                                        <div class="pay-text input-category-lbl ">
+                                            <input (focus)="txtFocus($event.target)"
+                                                (change)="txtFocusOut($event.target,income,'income')"
+                                                (click)="openExpenseTransactionTab(income.income_id,'income')" readonly
+                                                type="text" value="{{income.income_name}}"
+                                                class="income-lbl readOnlytxt form-control txt-left" id="text"
+                                                placeholder="Paycheck" name="text">
+                                        </div>
+                                        <div class="monthly-details d-flex align-items-end">
+                                            <div class="prise-input input-category-lbl">
+                                                <input (focus)="txtFocus($event.target)"
+                                                    (change)="txtMoneyFocusOut($event.target,income,'income')"
+                                                    (click)="openExpenseTransactionTab(income.income_id,'income')"
+                                                    readonly type="text"
+                                                    value="{{income.planned |currency:'PLN ':'code'}}"
+                                                    onkeyup="this.value = this.value.replace(/[^\d]+/g, '');"
+                                                    class="income-planned readOnlytxt form-control txt-right" id="text"
+                                                    placeholder="PLN 0.00" name="text">
+                                            </div>
+                                            <div class="prise-input">
+                                                <input disabled type="text"
+                                                    value="{{income.received |currency:'PLN ':'code'}}"
+                                                    class="income-planned form-control txt-right" id="text"
+                                                    placeholder="PLN 0.00" name="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button (click)="removeIncomeItems(income.income_id,income.income_name)"
+                                        type="button" class="remove-field"><i class="far fa-trash-alt"></i></button>
+                                    <div class="progress-process progress">
+                                        <div class="progress-bar progress-bar-success"
+                                            style="width:{{income.progress_bar}}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-between align-items-end">
+                                <div class="col-md-6">
+                                    <button type="button" (click)="addItems('income',0)" class="add-field">Add
+                                        Paycheck</button>
+                                </div>
+                                <div class="col-md-3 txt-right pr-2">
+                                    <span class="font-weight-bold">{{total_income_planned
+                                        |currency:'PLN ':'symbol-narrow'}}</span>
+                                </div>
+                                <div class="col-md-3 txt-right pr-4">
+                                    <span class="font-weight-bold">{{total_income_received
+                                        |currency:'PLN ':'symbol-narrow'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="budget">
+                    <h2 class="budget-title">Budget</h2>
+
+                    <div *ngIf="BudgetArray?.Favorites!=''" class="income-retailer budget-main bg-white">
+                        <h6 class="income-title font-weight-bold">Favorites</h6>
+                        <div class="multi-field-wrapper position-relative ml-07">
+                            <div class="multi-fields">
+                                <div *ngFor="let favorites of BudgetArray?.Favorites; let i = index"
+                                    class="multi-field position-relative">
+                                    <div class="mb-2 menu-field">
+                                        <ul class="nav nav-tabs border-0" role="tablist">
+                                            <li class="nav-item">
+                                                <a
+                                                    class="church-title nav-link p-0 border-0 input-category-lbl d-flex align-items-center"><input
+                                                        (focus)="txtFocus($event.target)"
+                                                        (change)="txtFocusOut($event.target,favorites,'expense')"
+                                                        (click)="openExpenseTransactionTab(favorites.expense_sub_id,'expense')"
+                                                        readonly type="text" value="{{favorites.sub_expense_name}}"
+                                                        class="expense-lbl readOnlytxt form-control" id="text"
+                                                        placeholder="Label" name="text"></a>
+                                            </li>
+                                        </ul>
+                                        <div class="progress-text d-flex justify-content-between align-items-end">
+                                            <div class="progress-info">
+                                                <span>Spent</span>
+                                                <p
+                                                    class="expense-left-spent mb-0 {{favorites.left_spend>=0?'':'color-danger'}}">
+                                                    {{favorites.total_spent |currency:'PLN ':'code'}}</p>
+                                            </div>
+                                            <div class="progress-info">
+                                                <span>Left to Spend</span>
+                                                <p
+                                                    class="expense-left-spent mb-0 {{favorites.left_spend>=0?'':'color-danger'}}">
+                                                    {{favorites.left_spend |currency:'PLN ':'code'}}</p>
+                                            </div>
+                                            <div class="progress-info">
+                                                <span>Planned</span>
+                                                <p class="mb-0 input-plasholder"><input
+                                                        (focus)="txtFocus($event.target)"
+                                                        (change)="txtMoneyFocusOut($event.target,favorites,'expense')"
+                                                        (click)="openExpenseTransactionTab(favorites.expense_sub_id,'expense')"
+                                                        readonly type="text"
+                                                        value="{{favorites.limit |currency:'PLN ':'code'}}"
+                                                        onkeyup="this.value = this.value.replace(/[^\d]+/g, '');"
+                                                        class="expense-limit readOnlytxt form-control" id="text"
+                                                        placeholder="PLN 0.00" name="text"></p>
+                                            </div>
+                                        </div>
+                                        <div class="progress-process progress">
+                                            <div class=" progress-bar {{favorites.left_spend>=0?'progress-bar-success':'progress-bar-danger'}}"
+                                                style="width: {{favorites.progress_bar}}%;"></div>
+                                        </div>
+                                    </div>
+                                    <button type="button"
+                                        (click)="removeExpenseItems(favorites.expense_sub_id,favorites.sub_expense_name,'Favorites')"
+                                        class="remove-field"><i class="far fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="income-retailer budget-main bg-white"
+                        *ngFor="let expense of BudgetArray?.Expense; let i = index">
+                        <h6 class="income-title font-weight-bold input-category-lbl">
+                            <input (focus)="txtFocus($event.target)"
+                                (change)="txtFocusOut($event.target,expense,'expenseCategory')" readonly type="text"
+                                value="{{expense.expense_name}}"
+                                class="header-category readOnlytxt expense-spent form-control" id="text"
+                                placeholder="PLN 0.00" name="text">
+                            <!-- {{expense.expense_name}} -->
+                        </h6>
+                        <div class="multi-field-wrapper position-relative ml-07">
+                            <div class="multi-fields">
+                                <div *ngFor="let expense_sub of expense?.expense_sub; let i = index"
+                                    class="multi-field position-relative">
+                                    <div class="mb-2 menu-field">
+                                        <ul class="nav nav-tabs border-0" role="tablist">
+                                            <li class="nav-item mb-10">
+                                                <a
+                                                    class="church-title nav-link p-0 border-0 input-category-lbl d-flex align-items-center"><img
+                                                        src="assets/front/img/menu.png"><input
+                                                        (focus)="txtFocus($event.target)"
+                                                        (change)="txtFocusOut($event.target,expense_sub,'expense')"
+                                                        (click)="openExpenseTransactionTab(expense_sub.expense_sub_id,'expense')"
+                                                        readonly type="text" value="{{expense_sub.sub_expense_name}}"
+                                                        class="expense-lbl readOnlytxt form-control" id="text"
+                                                        placeholder="Label" name="text"></a>
+                                            </li>
+                                        </ul>
+                                        <div class="progress-text d-flex justify-content-between align-items-end ml-1">
+                                            <div class="progress-info">
+                                                <span>Spent</span>
+                                                <p
+                                                    class="expense-left-spent mb-0 {{expense_sub.left_spend>=0?'':'color-danger'}}">
+                                                    {{expense_sub.total_spent |currency:'PLN ':'code'}}</p>
+                                            </div>
+                                            <div class="progress-info">
+                                                <span>Left to Spend</span>
+                                                <p
+                                                    class="expense-left-spent mb-0 {{expense_sub.left_spend>=0?'':'color-danger'}}">
+                                                    {{expense_sub.left_spend |currency:'PLN ':'code'}}</p>
+                                            </div>
+                                            <div class="progress-info">
+                                                <span>Planned</span>
+                                                <p class="mb-0 input-plasholder"><input
+                                                        (focus)="txtFocus($event.target)"
+                                                        (change)="txtMoneyFocusOut($event.target,expense_sub,'expense')"
+                                                        (click)="openExpenseTransactionTab(expense_sub.expense_sub_id,'expense')"
+                                                        readonly type="text"
+                                                        value="{{expense_sub.limit |currency:'PLN ':'code'}}"
+                                                        onkeyup="this.value = this.value.replace(/[^\d]+/g, '');"
+                                                        class="expense-limit readOnlytxt form-control" id="text"
+                                                        placeholder="PLN 0.00" name="text"></p>
+                                            </div>
+                                        </div>
+                                        <div class="progress-process progress ml-1">
+                                            <div class=" progress-bar  {{expense_sub.left_spend>=0?'progress-bar-success':'progress-bar-danger'}}"
+                                                style="width: {{expense_sub.progress_bar}}%;"></div>
+                                        </div>
+                                    </div>
+                                    <button type="button"
+                                        (click)="removeExpenseItems(expense_sub.expense_sub_id,expense_sub.sub_expense_name,expense.expense_name)"
+                                        class="remove-field left-25"><i class="far fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                            <button type="button" (click)="addItems('expense',expense.expense_id)" class="add-field">Add
+                                Item</button>
+                        </div>
+                    </div>
+                </div>
+                <a href="javascript:void(0)" (click)="add_ExpenseGroup()"
+                    class="btn-expense w-100 d-inline-block text-center">Add Group</a>
+                <footer class="footer w-100 d-inline-block">
+                    <ul class="d-flex justify-content-center list-unstyled">
+                        <li><a href="#">Terms of Service</a><span class="border-shape"></span></li>
+                        <li><a href="#">Privacy Policy</a><span class="border-shape"></span></li>
+                        <li><a routerLink="/app/contact-us">Contact Us</a><span class="border-shape"></span></li>
+                        <li><a href="#">About Us</a><span class="border-shape"></span></li>
+                        <li><a href="#">Subscription</a></li>
+                    </ul>
+                    <p class="footer-bottom text-center mb-0">Ⓒ StworzSwojBudzet, Inc. All Rights Reserved.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 ps-lg-0 d-sm-flex" *ngIf="budgetResponse && monthChange == false">
+        <div class="overview-main position-relative w-100 d-inline-block">
+            <h6 class="income-title mb-0">Monthly Overview</h6>
+            <ngx-charts-pie-chart [view]="[350, 250]" [results]="monthlyOverviewData" [legend]="showLegend"
+                [labels]="showLabels" [arcWidth]="0.50" [doughnut]="isDoughnut" [animations]="animations">
+            </ngx-charts-pie-chart>
+            <h6 class="income-title category-title mb-0">Expenses by category</h6>
+            <div class="category-progress mt-2">
+                <div *ngFor="let expense of BudgetArray?.Expense; let i = index" class="progress-box">
+                    <div class="row col-12 rowExpenseByCategory">
+                        <div class="col-4 circleProgress">
+                            <circle-progress [percent]="expense.total_category_percentage" [radius]="18"
+                                [showSubtitle]="false" [innerStrokeWidth]="10" [innerStrokeColor]="'#e7e8ea'"
+                                [showTitle]="false" [space]="-10" [titleFontSize]="'12'" [outerStrokeColor]="color[i]"
+                                [animation]="true" [animationDuration]="300" [startFromZero]="false" [showUnits]=false>
+                            </circle-progress>
+                        </div>
+                        <div class="col-6 expenseGroup">
+                            <h6 class="expenseGroup_h6">{{expense.expense_name}}</h6>
+                            <span class="expenseGroup_span">{{expense.total_category_spent
+                                |currency:'PLN ':'code'}}</span>
+                        </div>
+                        <div class="col-2 expenseGroupPercent">
+                            {{expense.total_category_percentage}}%
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-content">
+
+                <!-- expense tab -->
+                <div *ngFor="let expenseTransaction of BudgetArray?.ExpenseTransaction; let i = index" class="tab-pane"
+                    id="expense_{{expenseTransaction.expense_sub_id}}" role="tabpanel">
+                    <div class="premium-box text-center">
+                        <p class="text-white">Upgrade your <br> Stworz SwojBudzet <br> experience.</p>
+                        <a href="javascript:void(0)" class="premium-btn d-inline-block">Go Premium</a>
+                    </div>
+                    <div class="chruch-type d-flex justify-content-between align-items-center position-relative">
+                        <div class="chruch-title">
+                            <span class="d-inline-block">{{expenseTransaction.category}}</span>
+                            <h2>{{expenseTransaction.sub_category}}</h2>
+                        </div>
+                        <div class="chruch-title">
+                            <span class="d-inline-block">Planned</span>
+                            <h2>{{expenseTransaction.limit |currency:'PLN ':'code'}}</h2>
+                        </div>
+                    </div>
+                    <div class="progress-process progress">
+                        <div class="progress-bar {{expenseTransaction.limit>=expenseTransaction.total_spent?'progress-bar-success':'progress-bar-danger'}}"
+                            style="width: {{expenseTransaction.progress_bar}}%;"></div>
+                    </div>
+                    <div class="chruch-title d-flex justify-content-start align-items-center">
+                        <h2
+                            class="pr-1 {{expenseTransaction.limit>=expenseTransaction.total_spent?'color-success':'color-danger'}}">
+                            {{expenseTransaction.total_spent |currency:'PLN ':'code'}}
+                        </h2>
+                        <span class="d-inline-block">spent</span>
+                    </div>
+                    <div class="textarea-box BudgetItemDetails-notes position-relative">
+                        <textarea rows="2" cols="50" placeholder="Notes" class="textarea-note expense_sub_note"
+                            (change)="updateSubNote(expenseTransaction.expense_sub_id,$event.target,'expense')">{{expenseTransaction.note}}</textarea>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16"
+                            class="NotesIcon">
+                            <path fill="#0091D9" fill-rule="evenodd"
+                                d="M10.201,0.818666667 L10.1932196,0.811906202 C10.207286,0.823128275 10.2208882,0.834907636 10.2339928,0.847210855 L10.2491823,0.861928813 L13.8203804,4.43366347 L13.8203804,4.43366347 L13.8547605,4.47344711 L13.8547605,4.47344711 C13.8657346,4.48726106 13.8760935,4.50137804 13.8858648,4.51585133 C13.8946342,4.52868432 13.9031013,4.54220045 13.9110861,4.55603005 C13.918585,4.56929652 13.9254304,4.58216645 13.9318444,4.59524008 C13.9407209,4.61289882 13.9490191,4.63190057 13.956434,4.65133853 L13.9700587,4.69133753 L13.9700587,4.69133753 C13.9766367,4.71195105 13.9820945,4.73317738 13.9865072,4.75478415 L13.9965756,4.82121179 L13.9965756,4.82121179 L14,4.88888889 L14,14.3703704 C14,14.7050884 13.7533249,14.9821924 13.4318484,15.0298087 L13.3333333,15.037037 L2.66666667,15.037037 C2.33194864,15.037037 2.05484466,14.790362 2.00722838,14.4688855 L2,14.3703704 L2,1.33333333 C2,0.998615303 2.24667507,0.721511322 2.56815155,0.673895045 L2.66666667,0.666666667 L9.77777778,0.666666667 C9.81267391,0.666666667 9.84694383,0.66934782 9.88039277,0.674515366 C9.89119377,0.676296546 9.90160818,0.678179986 9.91196066,0.680307369 C9.93348928,0.684572137 9.95471561,0.690029984 9.97550639,0.696477904 C9.9886191,0.70073175 10.0017709,0.705268736 10.0147654,0.710210994 C10.0347661,0.717647537 10.0537678,0.725945774 10.0722843,0.735078341 C10.0845002,0.741236296 10.0973702,0.748081682 10.1100143,0.755349326 C10.1244662,0.763565387 10.1379824,0.772032483 10.151162,0.780958883 L10.2,0.817666667 L10.201,0.818666667 Z M9.111,1.99966667 L3.33333333,2 L3.33333333,13.7037037 L12.6666667,13.7037037 L12.666,5.55466667 L9.77777778,5.55555556 C9.44305975,5.55555556 9.16595577,5.30888049 9.11833949,4.987404 L9.11111111,4.88888889 L9.111,1.99966667 Z M10.962963,10.1481481 C11.3311528,10.1481481 11.6296296,10.446625 11.6296296,10.8148148 C11.6296296,11.1495328 11.3829546,11.4266368 11.0614781,11.4742531 L10.962963,11.4814815 L5.03703704,11.4814815 C4.6688472,11.4814815 4.37037037,11.1830046 4.37037037,10.8148148 C4.37037037,10.4800968 4.61704544,10.2029928 4.93852192,10.1553765 L5.03703704,10.1481481 L10.962963,10.1481481 Z M10.962963,7.18518519 C11.3311528,7.18518519 11.6296296,7.48366202 11.6296296,7.85185185 C11.6296296,8.18656988 11.3829546,8.46367386 11.0614781,8.51129014 L10.962963,8.51851852 L5.03703704,8.51851852 C4.6688472,8.51851852 4.37037037,8.22004169 4.37037037,7.85185185 C4.37037037,7.51713382 4.61704544,7.24002984 4.93852192,7.19241356 L5.03703704,7.18518519 L10.962963,7.18518519 Z M7.40740741,4.22222222 C7.77559724,4.22222222 8.07407407,4.52069906 8.07407407,4.88888889 C8.07407407,5.22360692 7.82739901,5.5007109 7.50592252,5.54832718 L7.40740741,5.55555556 L5.03703704,5.55555556 C4.6688472,5.55555556 4.37037037,5.25707872 4.37037037,4.88888889 C4.37037037,4.55417086 4.61704544,4.27706688 4.93852192,4.2294506 L5.03703704,4.22222222 L7.40740741,4.22222222 Z"
+                                transform="translate(-2)"></path>
+                        </svg>
+                    </div>
+
+                    <div class="transactions-box1 transactions-box d-flex justify-content-between align-items-center">
+                        <div class="transactions-title">
+                            <h4>{{expenseTransaction.total_transaction}} Transactions</h4>
+                        </div>
+                        <div class="transactions-addnew">
+                            <div class="wrapper">
+                                <a href="javascript:void(0)"
+                                    (click)="OpenTransactionModal(expenseTransaction,'expense','add')"
+                                    class="addnew-cleck"><i class="fas fa-plus-circle"></i>Add Expense</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngFor="let transaction of expenseTransaction.Transactions" class="transactions-items">
+                        <div *ngIf="transaction" (click)="OpenTransactionModal(transaction,'expense','edit')"
+                            class="transaction-history position-relative">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="transaction-name d-flex">
+                                    <span class="month-dates text-center">{{ transaction.date_time | date: "MMM"
+                                        }}<br>{{ transaction.date_time | date: "d" }}</span>
+                                    <p>{{transaction.title}} <br>
+                                        <!-- <span class="transactions-name">{{expenseTransaction.sub_category}}</span> -->
+                                    </p>
+                                </div>
+                                <div class="transactions-prise">
+                                    -{{transaction.amount |currency:'PLN ':'code'}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- income tab -->
+                <div *ngFor="let income of BudgetArray?.Income; let i = index" class="tab-pane"
+                    id="income_{{income.income_id}}" role="tabpanel">
+                    <div class="premium-box text-center">
+                        <p class="text-white">Upgrade your <br> Stworz SwojBudzet <br> experience.</p>
+                        <a href="javascript:void(0)" class="premium-btn d-inline-block">Go Premium</a>
+                    </div>
+                    <div class="chruch-type d-flex justify-content-between align-items-center position-relative">
+                        <div class="chruch-title">
+                            <span class="d-inline-block">Income</span>
+                            <h2>{{income.income_name}}</h2>
+                        </div>
+                        <div class="chruch-title">
+                            <span class="d-inline-block">Planned</span>
+                            <h2>{{income.planned |currency:'PLN ':'code'}}</h2>
+                        </div>
+                    </div>
+                    <div class="progress-process progress">
+                        <div class="progress-bar progress-bar-success" style="width: {{income.progress_bar}}%;"></div>
+                    </div>
+                    <div class="chruch-title d-flex justify-content-start align-items-center">
+                        <h2 class="pr-1 color-success">{{income.received |currency:'PLN ':'code'}}</h2>
+                        <span class="d-inline-block">received</span>
+                    </div>
+                    <div class="textarea-box BudgetItemDetails-notes position-relative">
+                        <textarea rows="2" cols="50" placeholder="Notes" class="textarea-note income_sub_note"
+                            (change)="updateSubNote(income.income_id,$event.target,'income')">{{income.note}}</textarea>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16"
+                            class="NotesIcon">
+                            <path fill="#0091D9" fill-rule="evenodd"
+                                d="M10.201,0.818666667 L10.1932196,0.811906202 C10.207286,0.823128275 10.2208882,0.834907636 10.2339928,0.847210855 L10.2491823,0.861928813 L13.8203804,4.43366347 L13.8203804,4.43366347 L13.8547605,4.47344711 L13.8547605,4.47344711 C13.8657346,4.48726106 13.8760935,4.50137804 13.8858648,4.51585133 C13.8946342,4.52868432 13.9031013,4.54220045 13.9110861,4.55603005 C13.918585,4.56929652 13.9254304,4.58216645 13.9318444,4.59524008 C13.9407209,4.61289882 13.9490191,4.63190057 13.956434,4.65133853 L13.9700587,4.69133753 L13.9700587,4.69133753 C13.9766367,4.71195105 13.9820945,4.73317738 13.9865072,4.75478415 L13.9965756,4.82121179 L13.9965756,4.82121179 L14,4.88888889 L14,14.3703704 C14,14.7050884 13.7533249,14.9821924 13.4318484,15.0298087 L13.3333333,15.037037 L2.66666667,15.037037 C2.33194864,15.037037 2.05484466,14.790362 2.00722838,14.4688855 L2,14.3703704 L2,1.33333333 C2,0.998615303 2.24667507,0.721511322 2.56815155,0.673895045 L2.66666667,0.666666667 L9.77777778,0.666666667 C9.81267391,0.666666667 9.84694383,0.66934782 9.88039277,0.674515366 C9.89119377,0.676296546 9.90160818,0.678179986 9.91196066,0.680307369 C9.93348928,0.684572137 9.95471561,0.690029984 9.97550639,0.696477904 C9.9886191,0.70073175 10.0017709,0.705268736 10.0147654,0.710210994 C10.0347661,0.717647537 10.0537678,0.725945774 10.0722843,0.735078341 C10.0845002,0.741236296 10.0973702,0.748081682 10.1100143,0.755349326 C10.1244662,0.763565387 10.1379824,0.772032483 10.151162,0.780958883 L10.2,0.817666667 L10.201,0.818666667 Z M9.111,1.99966667 L3.33333333,2 L3.33333333,13.7037037 L12.6666667,13.7037037 L12.666,5.55466667 L9.77777778,5.55555556 C9.44305975,5.55555556 9.16595577,5.30888049 9.11833949,4.987404 L9.11111111,4.88888889 L9.111,1.99966667 Z M10.962963,10.1481481 C11.3311528,10.1481481 11.6296296,10.446625 11.6296296,10.8148148 C11.6296296,11.1495328 11.3829546,11.4266368 11.0614781,11.4742531 L10.962963,11.4814815 L5.03703704,11.4814815 C4.6688472,11.4814815 4.37037037,11.1830046 4.37037037,10.8148148 C4.37037037,10.4800968 4.61704544,10.2029928 4.93852192,10.1553765 L5.03703704,10.1481481 L10.962963,10.1481481 Z M10.962963,7.18518519 C11.3311528,7.18518519 11.6296296,7.48366202 11.6296296,7.85185185 C11.6296296,8.18656988 11.3829546,8.46367386 11.0614781,8.51129014 L10.962963,8.51851852 L5.03703704,8.51851852 C4.6688472,8.51851852 4.37037037,8.22004169 4.37037037,7.85185185 C4.37037037,7.51713382 4.61704544,7.24002984 4.93852192,7.19241356 L5.03703704,7.18518519 L10.962963,7.18518519 Z M7.40740741,4.22222222 C7.77559724,4.22222222 8.07407407,4.52069906 8.07407407,4.88888889 C8.07407407,5.22360692 7.82739901,5.5007109 7.50592252,5.54832718 L7.40740741,5.55555556 L5.03703704,5.55555556 C4.6688472,5.55555556 4.37037037,5.25707872 4.37037037,4.88888889 C4.37037037,4.55417086 4.61704544,4.27706688 4.93852192,4.2294506 L5.03703704,4.22222222 L7.40740741,4.22222222 Z"
+                                transform="translate(-2)"></path>
+                        </svg>
+                    </div>
+
+                    <div class="transactions-box1 transactions-box d-flex justify-content-between align-items-center">
+                        <div class="transactions-title">
+                            <h4>{{income.total_transaction}} Transactions</h4>
+                        </div>
+                        <div class="transactions-addnew">
+                            <div class="wrapper">
+                                <a href="javascript:void(0)" (click)="OpenTransactionModal(income,'income','add')"
+                                    class="addnew-cleck"><i class="fas fa-plus-circle"></i>Add Expense</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngFor="let transaction of income.Transactions" class="transactions-items">
+                        <div *ngIf="transaction" (click)="OpenTransactionModal(transaction,'income','edit')"
+                            class="transaction-history position-relative">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="transaction-name d-flex">
+                                    <span class="month-dates text-center">{{ transaction.date_time | date: "MMM"
+                                        }}<br>{{ transaction.date_time | date: "d" }}</span>
+                                    <p>{{transaction.title}} <br>
+                                        <!-- <span class="transactions-name">{{income.sub_category}}</span> -->
+                                    </p>
+                                </div>
+                                <div class="transactions-prise color-success">
+                                    +{{transaction.amount |currency:'PLN ':'code'}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- track delete transaction -->
+                <div class="tab-pane" id="profile" role="tabpanel">
+                    <div class="transaction-tab-close">
+                        <div class="wrapper">
+                            <a href="javascript:void(0)" (click)="closeTransactionTab()" class="transactionClose"><i
+                                    class="fas fa-times icon-close"></i></a>
+                        </div>
+                    </div>
+                    <div class="premium-box text-center">
+                        <p class="text-white">Upgrade your <br> Stworz SwojBudzet <br> experience.</p>
+                        <a routerLink="/app/progresspanel" class="premium-btn d-inline-block">Go Premium</a>
+                    </div>
+                    <div class="transactions-box d-flex justify-content-between align-items-center">
+                        <div class="transactions-title">
+                            <h4>Transactions</h4>
+                        </div>
+                        <div class="transactions-addnew">
+                            <div class="wrapper">
+                                <a href="javascript:void(0)" (click)="OpenTransactionModal('','','add')"
+                                    class="addnew-cleck"><i class="fas fa-plus-circle"></i>Add Expense</a>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabbing position-relative" role="tablist">
+                        <li class="nav-items">
+                            <a class="nav-links navTab-font active" data-toggle="tab" href="#tracked" role="tab">My
+                                Transactions</a>
+                        </li>
+                        <li class="nav-items">
+                            <a class="nav-links navTab-font" data-toggle="tab" href="#deleted" role="tab">Deleted</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <form class="search-field">
+                            <input type="text" class="trn_search" (keyup)="getTransaction()" name="search"
+                                placeholder="Search">
+                        </form>
+                        <div class="tab-panes active" id="tracked" role="tabpanel">
+                            <div class="transactions-details">
+                                <div class="transactions-items">
+                                    <span class="month-title">{{ datetime | date: "MMMM" }}</span>
+                                    <p class="show-transactions" *ngIf="!budgetTransaction?.Tracked">No transactions</p>
+
+                                    <div *ngFor="let trackTrn of budgetTransaction?.Tracked"
+                                        class="transaction-history position-relative">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="col-2 transaction-name d-flex pl-pr-0">
+                                                <span class="month-dates text-center">{{ trackTrn.date_time | date:
+                                                    "MMM" }}<br>
+                                                    {{ trackTrn.date_time | date: "d" }}</span>
+                                            </div>
+                                            <div class="col-6 transaction-name pl-pr-0">
+                                                <p class="text-ellipsis">{{trackTrn.title}} <br> <span
+                                                        class="transactions-name text-ellipsis">{{trackTrn.sub_category}}</span>
+                                                </p>
+                                            </div>
+                                            <div class="transactions-prise col-4 pl-pr-0">
+                                                {{trackTrn.type =="income" ? '+' :'-'}}{{trackTrn.amount
+                                                |currency:'PLN ':'code'}}
+                                            </div>
+                                        </div>
+                                        <div class="cleck-icon d-flex justify-content-end align-items-center">
+                                            <!-- <div class="split-icon icon-btn">
+                                                <a href="javascript:void(0)"><img src="assets/front/img/split.png"></a>
+                                                Split
+                                            </div> -->
+                                            <div (click)="OpenTransactionModal(trackTrn,trackTrn.type,'edit')"
+                                                class="edit-icon icon-btn">
+                                                <a href="javascript:void(0)"><img src="assets/front/img/edit.png"></a>
+                                                Edit
+                                            </div>
+                                            <div (click)="updateTrnStatus(trackTrn.id,trackTrn.type,trackTrn.original_status,trackTrn.status)"
+                                                class="delete-icon icon-btn">
+                                                <a href="javascript:void(0)"><img src="assets/front/img/delete.png"></a>
+                                                Delete
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-panes" id="deleted" role="tabpanel">
+                            <div class="transactions-items">
+                                <span class="month-title">{{ datetime | date: "MMMM" }}</span>
+                                <p class="show-transactions" *ngIf="!budgetTransaction?.Deleted">No transactions</p>
+
+                                <div *ngFor="let deleteTrn of budgetTransaction?.Deleted"
+                                    class="transaction-history position-relative">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="col-2 transaction-name d-flex pl-pr-0">
+                                            <span class="month-dates text-center">{{ deleteTrn.date_time | date:
+                                                "MMM" }}<br>
+                                                {{ deleteTrn.date_time | date: "d" }}</span>
+                                        </div>
+                                        <div class="col-6 transaction-name pl-pr-0">
+                                            <p class="text-ellipsis">{{deleteTrn.title}} <br> <span
+                                                    class="transactions-name text-ellipsis">{{deleteTrn.sub_category}}</span>
+                                            </p>
+                                        </div>
+                                        <div class="transactions-prise col-4 pl-pr-0">
+                                            {{deleteTrn.type =="income" ? '+' :'-'}}{{deleteTrn.amount
+                                            |currency:'PLN ':'code'}}
+                                        </div>
+                                    </div>
+                                    <div class="cleck-icon d-flex justify-content-end align-items-center">
+                                        <div (click)="updateTrnStatus(deleteTrn.id,deleteTrn.type,deleteTrn.original_status,deleteTrn.status)"
+                                            class="delete-icon icon-btn" style="font-size: 15px;">
+                                            <!-- <a href="javascript:void(0)"><img src="assets/front/img/delete.png"></a> -->
+                                            <i class="fas fa-undo"></i>
+                                            Restore
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal income_expense_modal">
+    <div class="modal-overlay modal-toggle"></div>
+    <div class="modal-wrapper modal-transition">
+        <ul class="tabs d-flex justify-content-center">
+            <li class="tab-link text-pink tab-expense current m-0" data-tab="tab-1">Expense</li>
+            <li class="tab-link text-blue tab-income " data-tab="tab-2">Income</li>
+            <input type="hidden" class="original_status">
+            <input type="hidden" class="sub_category_id">
+            <input type="hidden" class="transaction_id">
+        </ul>
+        <div id="tab-1" class="tab-content current">
+            <div class="modal-header">
+                <button class="modal-close modalClose modal-toggle">
+                    <i class="fas fa-times icon-close"></i>
+                </button>
+                <h2 class="modal-heading">{{addEditTitle}} Expense</h2>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">
+                    <form>
+                        <div class="amount-input">
+                            <div class="form-input">
+                                <input type="text" class="form-control modal_amount"
+                                    (change)="txtMoneyFocusOut1($event.target)" (focus)="txtFocus($event.target)"
+                                    onkeyup="this.value = this.value.replace(/[^\d]+/g, '');" placeholder="PLN 0.00">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 pe-sm-0">
+                                    <input class="datepicker form-control modal_date" placeholder="12/02/2021"
+                                        type="date" />
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-box">
+                                        <input type="text" class="form-control modal_title"
+                                            placeholder="Where did you spend this money?">
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngFor="let transaction of splitTransaction; let i = index">
+                                <div class="BudgetItemAllocator-allocation">
+                                    <button (click)="removeSplitTransaction(i)"> <svg
+                                            class="Icon Icon--minus BudgetItemAllocator-remove" viewBox="0 0 22 22"
+                                            fill-rule="evenodd">
+                                            <path class="Icon-bg"
+                                                d="M21.1,10.8c0,4.2-2.5,8-6.4,9.6s-8.4,0.7-11.3-2.3s-3.9-7.5-2.3-11.3s5.4-6.4,9.6-6.4C16.4,0.4,21.1,5,21.1,10.8">
+                                            </path>
+                                            <path class="Icon-fg"
+                                                d="M16,12.2H5c-0.7,0-1.2-0.6-1.2-1.2S4.3,9.8,5,9.8h11c0.7,0,1.2,0.6,1.2,1.2S16.7,12.2,16,12.2z">
+                                            </path>
+                                        </svg></button>
+
+                                    <span class="BudgetItemAllocator-label">{{transaction.subCategoryName}}</span>
+                                    <div *ngIf="splitTransaction.length > 1"
+                                        class="BudgetItemAllocator-allocationAmount">
+                                        <div class="inputGroup">
+                                            <input type="text" [(ngModel)]="transaction.amount" #name="ngModel"
+                                                name="transaction{{i}}" placeholder="PLN 0.00"
+                                                (change)="txtSplitTransactionAmount($event.target)">
+                                            <span class="inputGroup-status"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="isSplit && splitTransaction.length > 1"
+                                class="BudgetItemAllocator-remaining BudgetItemAllocator-remaining--completed">
+                                <button class="BudgetItemAllocator-remainingLink">
+                                    <span class="money undefined">
+                                        <span class="money-integer">
+                                            {{totalSplitAmount |currency:'PLN ':'code'}}
+                                        </span>
+                                    </span>
+                                </button>
+                                <label class="BudgetItemAllocator-remainingLabel"><span>remaining</span></label>
+                            </div>
+                            <select class="select form-control modal_subcategory"
+                                data-placeholder="Choose budget item(s)">
+                                <option></option>
+                                <optgroup *ngFor="let group of select2TrnList" label="{{group.text}}">
+                                    <option *ngFor="let list of group.children" value="{{list.type}}_{{list.id}}">
+                                        {{list.text}}</option>
+                                </optgroup>
+                            </select>
+                            <div class="set">
+                                <a href="javascript:void(0)" class="">
+                                    <i class="fa fa-plus"></i>
+                                    <span id="option">More Options</span>
+                                </a>
+                                <div class="content">
+                                    <div class="form-box">
+                                        <input type="text" class="form-control modal_check" placeholder="Check #">
+                                        <textarea class="textarea-note modal_note" rows="4" cols="50"
+                                            placeholder="Note"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="newexpense-btn">
+                                <a [ngStyle]="{'pointer-events': splitTransaction.length > 1 && totalSplitAmount !== '0.00' ? 'none': 'auto'}"
+                                    href="javascript:void(0)" (click)="AddTransactions('expense')"
+                                    class="d-table modal_expense_btn">Track Expense</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="tab-2" class="tab-content">
+            <div class="modal-header">
+                <button class="modal-close modalClose modal-toggle">
+                    <i class="fas fa-times icon-close"></i>
+                </button>
+                <h2 class="modal-heading">{{addEditTitle}} Income</h2>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">
+                    <form>
+                        <div class="amount-input">
+                            <div class="form-input">
+                                <input type="text" class="form-control modal_amount"
+                                    (change)="txtMoneyFocusOut1($event.target)" (focus)="txtFocus($event.target)"
+                                    onkeyup="this.value = this.value.replace(/[^\d]+/g, '');" placeholder="PLN 0.00">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 pe-sm-0">
+                                    <input class="datepicker form-control modal_date" placeholder="12/02/2021"
+                                        type="date" />
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-box">
+                                        <input type="text" class="form-control modal_title"
+                                            placeholder="Where did you spend this money?">
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngFor="let transaction of splitTransaction; let i = index">
+                                <div class="BudgetItemAllocator-allocation">
+                                    <button (click)="removeSplitTransaction(i)"> <svg
+                                            class="Icon Icon--minus BudgetItemAllocator-remove" viewBox="0 0 22 22"
+                                            fill-rule="evenodd">
+                                            <path class="Icon-bg"
+                                                d="M21.1,10.8c0,4.2-2.5,8-6.4,9.6s-8.4,0.7-11.3-2.3s-3.9-7.5-2.3-11.3s5.4-6.4,9.6-6.4C16.4,0.4,21.1,5,21.1,10.8">
+                                            </path>
+                                            <path class="Icon-fg"
+                                                d="M16,12.2H5c-0.7,0-1.2-0.6-1.2-1.2S4.3,9.8,5,9.8h11c0.7,0,1.2,0.6,1.2,1.2S16.7,12.2,16,12.2z">
+                                            </path>
+                                        </svg></button>
+
+                                    <span class="BudgetItemAllocator-label">{{transaction.subCategoryName}}</span>
+                                    <div *ngIf="splitTransaction.length > 1"
+                                        class="BudgetItemAllocator-allocationAmount">
+                                        <div class="inputGroup">
+                                            <input type="text" [(ngModel)]="transaction.amount" #name="ngModel"
+                                                name="transaction{{i}}" placeholder="PLN 0.00"
+                                                (change)="txtSplitTransactionAmount($event.target)">
+                                            <span class="inputGroup-status"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="isSplit && splitTransaction.length >1"
+                                class="BudgetItemAllocator-remaining BudgetItemAllocator-remaining--completed">
+                                <button class="BudgetItemAllocator-remainingLink">
+                                    <span class="money undefined">
+                                        <span class="money-integer">
+                                            {{totalSplitAmount |currency:'PLN ':'code'}}
+                                        </span>
+                                    </span>
+                                </button>
+                                <label class="BudgetItemAllocator-remainingLabel"><span>remaining</span></label>
+                            </div>
+                            <select class="select form-control modal_subcategory"
+                                data-placeholder="Choose budget item(s)">
+                                <option></option>
+                                <optgroup *ngFor="let group of select2TrnList" label="{{group.text}}">
+                                    <option *ngFor="let list of group.children" value="{{list.type}}_{{list.id}}">
+                                        {{list.text}}</option>
+                                </optgroup>
+                            </select>
+                            <div class="set">
+                                <a href="javascript:void(0)" class="">
+                                    <i class="fa fa-plus"></i>
+                                    More Options
+                                </a>
+                                <div class="content">
+                                    <div class="form-box">
+                                        <input type="text" class="form-control modal_check" placeholder="Check #">
+                                        <textarea class="textarea-note modal_note" rows="4" cols="50"
+                                            placeholder="Note"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="newexpense-btn">
+                                <a href="javascript:void(0)" (click)="AddTransactions('income')"
+                                    class="d-table btn-blue modal_income_btn">Track Income</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="reactmodal-content modal delete_model">
+    <div class="modal-overlay"></div>
+    <div class="modal-wrapper modal-transition">
+        <div id="tab-1" class="tab-content current">
+            <div class="modal-header">
+                <button class="modal-close modalClose modal-toggle">
+                    <i class="fas fa-times icon-close"></i>
+                </button>
+                <h2 class="modal-heading">Delete {{deleteLabel}}</h2>
+            </div>
+            <div class="modal-body">
+                <p class="d-inline-block w-100 font-weight-bold br-4">Are you sure you want to delete {{deleteLabel}} ?
+                </p>
+                <p class="d-inline-block w-100">This will delete the {{deleteLabel}} item from your {{expense_name}}
+                    expense list</p>
+                <div>
+                    <a href="javascript:void(0)" class="modalClose modal-secondaryaction d-inline-block mr-5">Cancel</a>
+                    <a href="javascript:void(0)" (click)="confirmDeleteItem('expense')"
+                        class="modal-primaryAction d-inline-block">Delete</a><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="reactmodal-content modal delete_income_model">
+    <div class="modal-overlay"></div>
+    <div class="modal-wrapper modal-transition">
+        <div id="tab-1" class="tab-content current">
+            <div class="modal-header">
+                <button class="modal-close modalClose modal-toggle">
+                    <i class="fas fa-times icon-close"></i>
+                </button>
+                <h2 class="modal-heading msg-heading">Delete Label</h2>
+            </div>
+            <div class="modal-body">
+                <p class="d-inline-block w-100 msg-title">Are you sure you want to delete Label ?</p>
+                <div>
+                    <a href="javascript:void(0)" class="modalClose modal-secondaryaction d-inline-block mr-5">Cancel</a>
+                    <a href="javascript:void(0)" (click)="confirmDeleteItem('income')"
+                        class="modal-primaryAction d-inline-block">Delete</a><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

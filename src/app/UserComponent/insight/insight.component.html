@@ -1,0 +1,250 @@
+<!-- Header_Menu -->
+<div class="budzet w-100 d-inline-block align-top insight-pl">
+    <div class="container">
+        <div class="main-row w-100 position-relative">
+            <div class="col-md-14 insights-bgcolor">
+                <div class="row align-items-end">
+                    <div class="col-14 p-md-0 order-lg-0 order-2">
+                        <div class="insights-hero insight-panel-image w-100 d-inline-block">
+                            <h1 class="insights-title text-white mt-0">Get Insights with StworzSwojBudzet</h1>
+                            <p class="insights-subtitles">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                                do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                                aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                pariatur.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 d-lg-none d-block">
+                        <div class="insights-images img mt-5">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Button trigger modal -->
+
+                <div class="highcharts-main w-100 d-inline-block" *ngIf="userPlan==2">
+                    <div class="spending-breakdown bg-white w-100 d-inline-block">
+                        <div class="row align-items-left">
+                            <div class="col-md-5 order-md-0 order-2">
+                                <div class="highcharts-content">
+                                    <h2 class="highcharts-title">Spending Breakdown</h2>
+                                    <p class="highcharts-subtitles">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                                        esse cillum dolore eu fugiat nulla pariatur.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-7 text-md-end text-start">
+                                <div class="highcharts-images">
+                                    <ngx-charts-bar-horizontal-stacked [view]="[500,300]"
+                                        [results]="spendingBreakdownData" [gradient]="gradient" [xAxis]="xAxis"
+                                        [yAxis]="yAxis" [legend]="showLegend" [barPadding]="15"
+                                        [legendTitle]="legendTitle" [legendPosition]="legendPosition"
+                                        [xAxisTickFormatting]="xAxisTickFormatting" [showXAxisLabel]="showXAxisLabel"
+                                        [showYAxisLabel]="showYAxisLabel" [rotateXAxisTicks]="rotateXAxisTicks">
+                                    </ngx-charts-bar-horizontal-stacked>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spending-breakdown bg-white monthly-income w-100 d-inline-block">
+                        <div class="row align-items-left">
+                            <div class="col-md-5 order-1">
+                                <div class="highcharts-content">
+                                    <h5 class="highcharts-title">Monthly Income</h5>
+                                    <p class="highcharts-subtitles">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                                        esse cillum dolore eu fugiat nulla pariatur.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-7 text-start">
+                                <div class="highcharts-images">
+                                    <button (click)="getInsightChartData()">
+                                        <i class="fa fa-arrow-left"></i>
+                                     </button>
+                                    <ngx-charts-bar-vertical-stacked [view]="[500, 300]" [scheme]="colorScheme"
+                                        [results]="monthlyIncomeData" [gradient]="gradient" [xAxis]="xAxis"
+                                        [legendTitle]="legendTitle" [yAxis]="yAxis" [legend]="showLegend"
+                                        [showXAxisLabel]="showXAxisLabel" [yAxisTickFormatting]="yAxisTickFormatting"
+                                        [showYAxisLabel]="showYAxisLabel" [animations]="animations" [barPadding]="30"
+                                        [legendPosition]="legendPosition" (select)="onIncomeSelect($event)">
+                                    </ngx-charts-bar-vertical-stacked>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spending-breakdown bg-white w-100 d-inline-block">
+                        <div class="row">
+                            <div class="col-md-5 order-md-0 order-2">
+                                <div class="highcharts-content">
+                                    <h5 class="highcharts-title">Spending Totals</h5>
+                                    <p class="highcharts-subtitles">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                                        esse cillum dolore eu fugiat nulla pariatur.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-7 text-md-end text-start pl-0">
+                                <div class="highcharts-images">
+                                    <button (click)="getInsightChartData()">
+                                        <i class="fa fa-arrow-left"></i>
+                                     </button>
+                                    <ngx-charts-pie-chart [view]="[550, 300]" [results]="spendingTotalData"
+                                        [legend]="spendingLegend" [labels]="showLabels" [arcWidth]="0.50"
+                                        [doughnut]="isDoughnut" (select)="onSelect($event)" [animations]="animations"
+                                        [trimLabels]="false">
+                                    </ngx-charts-pie-chart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spending-breakdown bg-white monthly-income w-100 d-inline-block mb-0">
+                        <div class="row align-items-left">
+                            <div class="col-md-5 order-1">
+                                <div class="highcharts-content">
+                                    <h5 class="highcharts-title">Income Vs. Spent</h5>
+                                    <p class="highcharts-subtitles">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                                        esse cillum dolore eu fugiat nulla pariatur.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-7 text-start">
+                                <div class="highcharts-images">
+                                    <ngx-charts-line-chart [view]="[500, 300]" [scheme]="colorScheme"
+                                        [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                                        [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis"
+                                        [legendPosition]="legendPosition" [legendTitle]="legendTitle"
+                                        [referenceLines]="incomevsExpenseRefLineData" [showRefLabels]="true"
+                                        [showRefLines]="showRefLines" [yAxisTickFormatting]="yAxisTickFormatting"
+                                        [results]="incomevsExpenseData">
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highcharts-main w-100 d-inline-block" *ngIf="userPlan==1">
+                    <div class="spending-breakdown bg-white w-100 d-inline-block">
+                        <div class="row align-items-lg-end align-items-left">
+                            <div class="col-md-6 order-md-0 order-2">
+                                <div class="highcharts-content">
+                                    <h5 class="highcharts-title">Spending Breakdown</h5>
+                                    <p class="highcharts-subtitles">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                                        esse cillum dolore eu fugiat nulla pariatur.</p>
+                                    <div style="display: inline-flex">
+                                        <a href="/app/progresspanel?chooseplan=choose-plan" class="insight_btn">
+                                            See My Spending Breakdowns
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-md-end text-start">
+                                <div class="highcharts-images">
+                                    <img src="assets/img/insights/spending-breakdown.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spending-breakdown bg-white monthly-income w-100 d-inline-block">
+                        <div class="row align-items-lg-end align-items-left">
+                            <div class="col-md-6 order-1">
+                                <div class="highcharts-content">
+                                    <h5 class="highcharts-title">Monthly Income</h5>
+                                    <p class="highcharts-subtitles">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                                        esse cillum dolore eu fugiat nulla pariatur.</p>
+                                    <div style="display: inline-flex">
+                                        <a href="/app/progresspanel?chooseplan=choose-plan" class="insight_btn">
+                                            See My Monthly Income
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-start">
+                                <div class="highcharts-images">
+                                    <img src="assets/img/insights/monthly-income.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spending-breakdown bg-white w-100 d-inline-block">
+                        <div class="row">
+                            <div class="col-md-6 order-md-0 order-2">
+                                <div class="highcharts-content">
+                                    <h5 class="highcharts-title">Spending Totals</h5>
+                                    <p class="highcharts-subtitles">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                                        esse cillum dolore eu fugiat nulla pariatur.</p>
+                                    <div class="color-box">
+                                        <div style="display: inline-flex">
+                                            <a href="/app/progresspanel?chooseplan=choose-plan" class="insight_btn">
+                                                See My Spending Totals
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-md-end text-start">
+                                <div class="highcharts-images">
+                                    <img src="assets/img/insights/spending-totals.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spending-breakdown bg-white monthly-income w-100 d-inline-block mb-0">
+                        <div class="row align-items-lg-end align-items-left">
+                            <div class="col-md-6 order-1">
+                                <div class="highcharts-content">
+                                    <h5 class="highcharts-title">Income Vs. Spent</h5>
+                                    <p class="highcharts-subtitles">Lorem ipsum dolor sit amet, consectetur adipiscing
+                                        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                                        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                                        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+                                        esse cillum dolore eu fugiat nulla pariatur.</p>
+                                    <div class="color-box">
+                                        <div style="display: inline-flex">
+                                            <a href="/app/progresspanel?chooseplan=choose-plan" class="insight_btn">
+                                                See My Insights
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-start">
+                                <div class="highcharts-images">
+                                    <img src="assets/img/insights/income-vs-spent.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="footer footer-insights w-100 d-inline-block">
+                    <ul class="d-flex justify-content-center list-unstyled">
+                        <li><a href="#">Terms of Service</a><span class="border-shape"></span></li>
+                        <li><a href="#">Privacy Policy</a><span class="border-shape"></span></li>
+                        <li><a routerLink="/app/contact-us">Contact Us</a><span class="border-shape"></span></li>
+                        <li><a href="#">About Us</a><span class="border-shape"></span></li>
+                        <li><a href="#">Subscription</a></li>
+                    </ul>
+                    <p class="footer-bottom text-center mb-0">Ⓒ StworzSwojBudzet, Inc. All Rights Reserved.</p>
+                </footer>
+            </div>
+
+        </div>
+    </div>
+</div>
